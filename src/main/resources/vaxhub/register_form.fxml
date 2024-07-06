@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="paneHolder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="887.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.vaxhub.controller.RegisterFormController">
+   <children>
+      <ImageView fitHeight="809.0" fitWidth="912.0" layoutX="102.0" layoutY="32.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/baby.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="patientLnameLable" layoutX="572.0" layoutY="37.0" prefHeight="27.0" prefWidth="158.0" text="Child LastName:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="PatientLastNameTextField" layoutX="564.0" layoutY="74.0" onKeyReleased="#regLNOnKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex: prabodha" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="PatientAddressTextField" layoutX="28.0" layoutY="268.0" onKeyReleased="#regAdressOnKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex: No 89/27,Balapitiya" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TextField>
+      <Label layoutX="30.0" layoutY="219.0" prefHeight="49.0" prefWidth="146.0" text=" Address:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="patientConNumLable" layoutX="318.0" layoutY="233.0" prefHeight="27.0" prefWidth="218.0" text=" Contact Number:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="PatientContactNumberTextField" layoutX="321.0" layoutY="265.0" onKeyReleased="#regconOnKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex: 0760508895" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <JFXButton fx:id="saveButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="62.0" layoutY="376.0" onAction="#SaveButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/save.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="updateButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="293.0" layoutY="376.0" onAction="#UpdateButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #e67e22;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/update.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="deleteButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="521.0" layoutY="376.0" onAction="#DeleteButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #e74c3c;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/delete.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="clearButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="747.0" layoutY="376.0" onAction="#ClearButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #7f8c8d;" text="Clear" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/clear.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <TableView fx:id="patientTable" layoutX="12.0" layoutY="541.0" opacity="0.5" prefHeight="300.0" prefWidth="971.0">
+         <columns>
+            <TableColumn fx:id="regIdColumn" prefWidth="90.0" text="Reg_Id" />
+            <TableColumn fx:id="PatientFirstNameColumn" prefWidth="204.0" text="F_Name" />
+            <TableColumn fx:id="PatientLastNameColumn" prefWidth="223.0" text="L_Name" />
+            <TableColumn fx:id="PatientAddressColumn" prefWidth="242.0" text="Address" />
+            <TableColumn fx:id="PatientCintactNumberColumn" prefWidth="211.0" text="cont_num" />
+         </columns>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.6980392336845398" green="0.29019609093666077" blue="0.29019609093666077" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TableView>
+      <Label fx:id="patientFnAameLable" layoutX="310.0" layoutY="37.0" prefHeight="27.0" prefWidth="167.0" text="Child FirstName:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="PatientFirstNameTextField" layoutX="310.0" layoutY="80.0" onKeyReleased="#regFNOnKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex: sahan" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="160.0" fitWidth="146.0" layoutX="803.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/registerclr.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="patientLnameLable1" layoutX="24.0" layoutY="37.0" prefHeight="27.0" prefWidth="158.0" text="Register Id:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="registerIdTextField" layoutX="21.0" layoutY="84.0" onAction="#RegChildSearchOnAction" onKeyReleased="#regIdOnKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex: REG001" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="paneHolder" prefHeight="887.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.vaxhub.controller.VaccineFormController">
+   <children>
+      <ImageView fitHeight="809.0" fitWidth="912.0" layoutX="93.0" layoutY="39.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/baby.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="30.0" layoutY="26.0" prefHeight="27.0" prefWidth="108.0" text="Vaccine Id:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="576.0" layoutY="26.0" prefHeight="27.0" prefWidth="132.0" text="Vaccine Name:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="327.0" layoutY="189.0" prefHeight="27.0" prefWidth="132.0" text="Manufacture:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="ManufactureTextField" layoutX="321.0" layoutY="225.0" prefHeight="37.0" prefWidth="211.0" promptText="ex: Merck " style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TextField>
+      <Label layoutX="32.0" layoutY="192.0" prefHeight="27.0" prefWidth="124.0" text="Vaccine date:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="582.0" layoutY="192.0" prefHeight="19.0" prefWidth="91.0" text="Quantity:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="QuantityTextField" layoutX="576.0" layoutY="225.0" onKeyReleased="#VccineQTYOnKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex: 300" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TextField>
+      <ImageView fitHeight="113.0" fitWidth="108.0" layoutX="856.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/stock.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="VaccinationTable" layoutX="10.0" layoutY="485.0" opacity="0.5" prefHeight="327.0" prefWidth="975.0">
+         <columns>
+            <TableColumn fx:id="VaccineIdColumn" prefWidth="127.0" text="Vaccine_Id" />
+            <TableColumn fx:id="EmployeeIdColumn" prefWidth="127.0" text="Employee_NIC" />
+            <TableColumn fx:id="VaccineNameColumn" prefWidth="262.0" text="Vaccine_Name" />
+            <TableColumn fx:id="VaccineDateColumn" prefWidth="192.0" text="Vaccine_Date" />
+            <TableColumn fx:id="ManufactureColumn" prefWidth="144.0" text="Manufacture" />
+            <TableColumn fx:id="QuantityColumn" prefWidth="249.0" text="Quantity" />
+         </columns>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.6980392336845398" green="0.29019609093666077" blue="0.29019609093666077" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TableView>
+      <JFXButton fx:id="saveButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="112.0" layoutY="373.0" onAction="#SaveButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/save.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="updateButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="330.0" layoutY="373.0" onAction="#UpdateButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #e67e22;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/update.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="deleteButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="550.0" layoutY="373.0" onAction="#DeleteButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #e74c3c;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/delete.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="clearButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="777.0" layoutY="373.0" onAction="#ClearButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #7f8c8d;" text="Clear" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/clear.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <TextField fx:id="VaccineIdTextField" layoutX="30.0" layoutY="62.0" onKeyReleased="#VccineIdOnKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex: V001" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TextField>
+      <JFXComboBox fx:id="vaccineNmaeCMB" focusColor="#6f1a52" layoutX="576.0" layoutY="62.0" prefHeight="37.0" prefWidth="246.0" promptText="Vaccine Name" />
+      <Label fx:id="DateLable" layoutX="34.0" layoutY="228.0" prefHeight="37.0" prefWidth="211.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="EmployeeIdLBL" layoutX="321.0" layoutY="24.0" prefHeight="27.0" prefWidth="135.0" text="Employee Id:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="EmployeeIdCMB" focusColor="#6f1a52" layoutX="321.0" layoutY="73.0" onAction="#EmployeeIdCMBOnAction" prefHeight="27.0" prefWidth="221.0" promptText="Employee Id" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="paneHolder" prefHeight="887.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.vaxhub.controller.EmployeeAttendanceController">
+   <children>
+      <ImageView fitHeight="809.0" fitWidth="912.0" layoutX="129.0" layoutY="39.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/baby.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="136.0" fitWidth="142.0" layoutX="848.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/employee.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="EmployeeIdLBL" layoutX="346.0" layoutY="26.0" prefHeight="27.0" prefWidth="135.0" text="Employee Id:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="346.0" layoutY="148.0" prefHeight="19.0" prefWidth="135.0" text="Out Time:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="OutTimeTextField" layoutX="339.0" layoutY="202.0" onKeyReleased="#EattendKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex:11.00pm" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Label layoutX="24.0" layoutY="148.0" prefHeight="18.0" prefWidth="107.0" text="In Time:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="InTimeTextField" layoutX="24.0" layoutY="202.0" onKeyReleased="#EattendKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex:10.00am" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Label layoutX="19.0" layoutY="26.0" prefHeight="27.0" prefWidth="149.0" text="Attendance Id:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="AttendanceIdTextField" layoutX="24.0" layoutY="61.0" onKeyReleased="#EattendIdKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex:AT001" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Label layoutX="622.0" layoutY="26.0" prefHeight="19.0" prefWidth="135.0" text="Date:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="EmployeeAttendanceTable" layoutX="10.0" layoutY="469.0" opacity="0.5" prefHeight="327.0" prefWidth="975.0">
+         <columns>
+            <TableColumn fx:id="AttendanceIdColumn" prefWidth="136.0" text="Atd_Id" />
+            <TableColumn fx:id="EmployeeIdColumn" prefWidth="128.0" text="E_Id" />
+            <TableColumn fx:id="DateColumn" prefWidth="210.0" text="Date" />
+            <TableColumn fx:id="InTimeColumn" prefWidth="264.0" text="In_Time" />
+            <TableColumn fx:id="OutTimeColumn" prefWidth="236.0" text="Out_Time" />
+            <TableColumn fx:id="AttendanceColumn" prefWidth="236.0" text="Attendance" />
+         </columns>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.6980392336845398" green="0.29019609093666077" blue="0.29019609093666077" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TableView>
+      <JFXButton fx:id="MoveEmployeeManageButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="657.0" layoutY="815.0" onAction="#MoveEmployeeManageButtonOnAction" prefHeight="52.0" prefWidth="288.0" style="-fx-background-color: #385836;" text="Move Employee Manage" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="saveButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="93.0" layoutY="367.0" onAction="#SaveButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/save.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="updateButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="311.0" layoutY="367.0" onAction="#UpdateButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #e67e22;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/update.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="deleteButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="531.0" layoutY="367.0" onAction="#DeleteButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #e74c3c;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/delete.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="clearButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="758.0" layoutY="367.0" onAction="#ClearButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #7f8c8d;" text="Clear" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/clear.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <Label layoutX="622.0" layoutY="148.0" prefHeight="19.0" prefWidth="135.0" text="Attendance:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="EmployeeIdCMB" focusColor="#6f1a52" layoutX="346.0" layoutY="67.0" onAction="#EmployeeIdCMBOnAction" prefHeight="27.0" prefWidth="221.0" promptText="Employee Id" />
+      <Label fx:id="DateLable" layoutX="610.0" layoutY="62.0" prefHeight="37.0" prefWidth="211.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="AtenndanceCMB" focusColor="#6f1a52" layoutX="622.0" layoutY="208.0" prefHeight="27.0" prefWidth="221.0" promptText="0/1" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="998.0" prefWidth="1406.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.vaxhub.controller.LoginFormController">
+   <children>
+      <ImageView fitHeight="1010.0" fitWidth="1600.0" layoutX="-6.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/LOGIN.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="useridTextField" layoutX="785.0" layoutY="332.0" onKeyReleased="#LOGINuIdOnKeyReleased" prefHeight="48.0" prefWidth="406.0" promptText="UserId" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.6313725709915161" green="0.34117648005485535" blue="0.34117648005485535" />
+               </color>
+            </DropShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="passwordTextField" layoutX="785.0" layoutY="472.0" onKeyReleased="#LOGpwuIdOnKeyReleased" prefHeight="48.0" prefWidth="406.0" promptText="password" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.6313725709915161" green="0.34117648005485535" blue="0.34117648005485535" />
+               </color>
+            </DropShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </PasswordField>
+      <ImageView fitHeight="113.0" fitWidth="112.0" layoutX="664.0" layoutY="305.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/user.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="72.0" fitWidth="73.0" layoutX="691.0" layoutY="460.0" opacity="0.86" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/lock.png" />
+         </image>
+      </ImageView>
+      <JFXButton fx:id="loginButton" layoutX="857.0" layoutY="567.0" onAction="#loginButtonOnAction" prefHeight="54.0" prefWidth="222.0" style="-fx-background-color: black; -fx-background-radius: 5;" text="Login" textFill="#f2efef">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="cancelButton" layoutX="859.0" layoutY="647.0" onAction="#cancelButtonOnAction" prefHeight="54.0" prefWidth="222.0" style="-fx-background-color: black; -fx-background-radius: 5;" text="Cancel" textFill="#f2efef">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <Label layoutX="725.0" layoutY="741.0" prefHeight="60.0" prefWidth="407.0" text="Don't have an account ?" textFill="#1e1515">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Line endX="276.6666259765625" layoutX="944.0" layoutY="723.0" startX="-258.0" />
+      <Hyperlink fx:id="SignUpHyperLink" layoutX="1027.0" layoutY="740.0" onAction="#SignupLinkOnAction" text="Sign Up" textFill="#0d0c0c">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Hyperlink>
+   </children>
+</AnchorPane>

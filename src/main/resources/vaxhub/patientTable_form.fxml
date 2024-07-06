@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="paneHolder" prefHeight="887.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.vaxhub.controller.PatientTableController">
+   <children>
+      <ImageView fitHeight="809.0" fitWidth="912.0" layoutX="136.0" layoutY="28.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/baby.png" />
+         </image>
+      </ImageView>
+      <JFXButton fx:id="BackPatientButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="778.0" layoutY="827.0" onAction="#BackPatientButtonOnAction" prefHeight="38.0" prefWidth="150.0" style="-fx-background-color: #16537e;" text="Back Patient" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="MoveVaccinationButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="776.0" layoutY="775.0" onAction="#MoveVaccinationButtonOnAction" prefHeight="38.0" prefWidth="150.0" style="-fx-background-color: #385836;" text="Move Vaccination" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <TableView fx:id="patientTable" layoutX="14.0" layoutY="35.0" opacity="0.5" prefHeight="717.0" prefWidth="971.0">
+         <columns>
+            <TableColumn fx:id="PatientIdColumn" prefWidth="51.0" text="P_Id" />
+            <TableColumn fx:id="regIdColumn" prefWidth="78.0" text="Reg_Id" />
+            <TableColumn fx:id="PatientFirstNameColumn" prefWidth="57.0" text="F_Name" />
+            <TableColumn fx:id="PatientLastNameColumn" prefWidth="52.0" text="L_Name" />
+            <TableColumn fx:id="GenderColumn" prefWidth="59.0" text="Gender" />
+            <TableColumn fx:id="BirthdayColumn" prefWidth="83.0" text="B_Day" />
+            <TableColumn fx:id="EmailColumn" prefWidth="142.0" text="Email" />
+            <TableColumn fx:id="PatientAddressColumn" prefWidth="173.0" text="Address" />
+            <TableColumn fx:id="PatientCintactNumberColumn" prefWidth="120.0" text="cont_num" />
+            <TableColumn fx:id="DateAdministerColumn" minWidth="0.0" prefWidth="112.0" text="Date_Admin" />
+            <TableColumn fx:id="AdverseReaction" minWidth="0.0" prefWidth="124.0" text="Ad_Reaction" />
+            <TableColumn fx:id="vaccineNameClm" minWidth="0.0" prefWidth="124.0" text="Vaccine_Name" />
+            <TableColumn fx:id="weightValueClm" minWidth="0.0" prefWidth="124.0" text="Weight_Value" />
+            <TableColumn fx:id="hieghtValueClm" minWidth="0.0" prefWidth="124.0" text="Hieght_Value" />
+         </columns>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.6980392336845398" green="0.29019609093666077" blue="0.29019609093666077" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TableView>
+   </children>
+</AnchorPane>

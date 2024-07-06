@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="paneHolder" prefHeight="887.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.vaxhub.controller.AppoimentFormController">
+   <children>
+      <ImageView fitHeight="809.0" fitWidth="912.0" layoutX="97.0" layoutY="47.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/baby.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="appoimentIdLable" layoutX="23.0" layoutY="25.0" prefHeight="27.0" prefWidth="149.0" text="Appoiment Id:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="ApooimentIdTextField" layoutX="23.0" layoutY="62.0" onAction="#AppoimentSearchOnAction" onKeyReleased="#APidOnKeyReleased" prefHeight="37.0" prefWidth="211.0" promptText="ex: AP001" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TableView fx:id="AppoimentTable" layoutX="10.0" layoutY="513.0" opacity="0.5" prefHeight="327.0" prefWidth="975.0">
+         <columns>
+            <TableColumn fx:id="appoimentidColumn" prefWidth="152.0" text="Appoiment_Id" />
+            <TableColumn fx:id="EmployeeIdColumn" prefWidth="190.0" text="Employe_Id" />
+            <TableColumn fx:id="patientidColumn" prefWidth="158.0" text="Patient_Id" />
+            <TableColumn fx:id="appoimentDateTimeColumn" prefWidth="247.0" text="Date" />
+            <TableColumn fx:id="AppoimentTimeColumn" prefWidth="227.0" text="Appoiment_Time" />
+         </columns>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.6980392336845398" green="0.29019609093666077" blue="0.29019609093666077" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TableView>
+      <Label fx:id="AppoimentDateLable" layoutX="327.0" layoutY="176.0" prefHeight="19.0" prefWidth="135.0" text="Date:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="AppoimentTimeLable" layoutX="23.0" layoutY="173.0" prefHeight="27.0" prefWidth="163.0" text="Appoiment Time:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="AppoimentTimeTextField" layoutX="23.0" layoutY="216.0" prefHeight="37.0" prefWidth="211.0" promptText="ex:10.00am" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.7631579041481018" green="0.36391326785087585" blue="0.36391326785087585" />
+               </color>
+            </DropShadow>
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="136.0" fitWidth="135.0" layoutX="828.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/appoiment.png" />
+         </image>
+      </ImageView>
+      <JFXButton fx:id="saveButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="98.0" layoutY="392.0" onAction="#SaveButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/save.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="updateButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="316.0" layoutY="392.0" onAction="#UpdateButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #e67e22;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/update.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="deleteButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="536.0" layoutY="392.0" onAction="#DeleteButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #e74c3c;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/delete.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="clearButton" buttonType="RAISED" contentDisplay="RIGHT" layoutX="763.0" layoutY="392.0" onAction="#ClearButtonOnAction" prefHeight="52.0" prefWidth="158.0" style="-fx-background-color: #7f8c8d;" text="Clear" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../database-programmingserr/_06-supermarket-mvc/src/main/resources/asserts/icon/clear.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXComboBox fx:id="ParentNICCMB" focusColor="#6f1a52" layoutX="327.0" layoutY="68.0" onAction="#ParentNICCMBOnAction" prefHeight="27.0" prefWidth="221.0" promptText="Parent Nic" />
+      <Label fx:id="ParentNicLBL" layoutX="331.0" layoutY="19.0" prefHeight="40.0" prefWidth="128.0" text="Parent NIC:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="EmployeeIdLBL" layoutX="584.0" layoutY="21.0" prefHeight="27.0" prefWidth="135.0" text="Employee Id:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="EmployeeIdCMB" focusColor="#6f1a52" layoutX="584.0" layoutY="70.0" onAction="#EmployeeIdCMBOnAction" prefHeight="27.0" prefWidth="221.0" promptText="Employee Id" />
+      <Label fx:id="DateLable" layoutX="327.0" layoutY="220.0" prefHeight="37.0" prefWidth="211.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

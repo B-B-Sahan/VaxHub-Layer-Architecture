@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootNode" prefHeight="972.0" prefWidth="1345.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.vaxhub.controller.SignUpFormController">
+   <children>
+      <ImageView fitHeight="1008.0" fitWidth="1575.0" layoutX="-6.0" layoutY="-11.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/signUp.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="72.0" fitWidth="63.0" layoutX="70.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/user.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="useridTextField" layoutX="139.0" layoutY="369.0" onKeyReleased="#USERiDOnKeyReleased" prefHeight="27.0" prefWidth="356.0" promptText="Input your user id here , ex: U001" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.5921052694320679" green="0.19188596308231354" blue="0.19188596308231354" />
+               </color>
+            </DropShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="42.0" fitWidth="32.0" layoutX="87.0" layoutY="589.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/lock.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="72.0" fitWidth="63.0" layoutX="71.0" layoutY="434.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets.icon/user.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="userNammeTextField" layoutX="141.0" layoutY="444.0" onKeyReleased="#USERNmaeOnKeyReleased" prefHeight="27.0" prefWidth="356.0" promptText="Input your user name here" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.5921568870544434" green="0.1921568661928177" blue="0.1921568661928177" />
+               </color>
+            </DropShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="passwordTextField" layoutX="141.0" layoutY="586.0" onKeyReleased="#USERpasswordOnKeyReleased" prefHeight="27.0" prefWidth="356.0" promptText="Input your password here" style="-fx-background-radius: 5;">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.5921568870544434" green="0.1921568661928177" blue="0.1921568661928177" />
+               </color>
+            </DropShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </PasswordField>
+      <JFXButton fx:id="signupButton" layoutX="183.0" layoutY="693.0" onAction="#SignupButtonOnAction" prefHeight="54.0" prefWidth="222.0" style="-fx-background-color: black; -fx-background-radius: 5;" text="Sign Up" textFill="#f2efef">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <Label layoutX="89.0" layoutY="818.0" prefHeight="42.0" prefWidth="295.0" text="Already have an account?" textFill="#1e1515">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Hyperlink fx:id="logingButton" layoutX="382.0" layoutY="807.0" onAction="#loginLinkOnAction" text="Login" textFill="#0d0c0c">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Hyperlink>
+      <Line endX="302.6666564941406" layoutX="194.0" layoutY="793.0" startX="-114.66666412353516" />
+      <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="521.0">
+         <image>
+            <Image url="@../../../../../../AutoCareCenter/src/main/resources/asserts/icons8-email-50.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="EmailTextField" layoutX="141.0" layoutY="514.0" onKeyReleased="#USEREmailOnKeyReleased" prefHeight="27.0" prefWidth="356.0" promptText="Input your email here" style="-fx-background-radius: 5;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.5921568870544434" green="0.1921568661928177" blue="0.1921568661928177" />
+               </color>
+            </DropShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>
