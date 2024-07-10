@@ -24,24 +24,16 @@ public class DAOFactory {
                 return new EmployeeAttendanceDAOImpl();
             case EMPLOYEE:
                 return new EmployeeDAOImpl();
-            case HIEGHT:
-                return new HieghtDAOImpl();
-            case INFORMATION_SYSTEM:
-                return new InformationSystemDAOImpl();
+
             case PATIENT:
                 return new PatientDAOImpl();
             case PAYMENT:
                 return new PaymentDAOImpl();
-            case PLACE_APPOIMENT:
-                return new PlaceAppoimentDAOImpl();
+
             case PLACE_VACCINATION:
                 return new PlaceVaccinationDAOImpl();
             case REGISTER:
                 return new RegisterDAOImpl();
-            case REPORT:
-                return new ReportDAOImpl();
-            case USER:
-                return new UserDAOImpl();
             case VACCINATION:
                 return new VaccinationDAOImpl();
             case VACCINE:

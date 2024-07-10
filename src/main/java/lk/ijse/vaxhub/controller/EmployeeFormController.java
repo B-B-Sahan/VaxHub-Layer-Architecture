@@ -13,10 +13,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import lk.ijse.vaxhub.model.Employee;
-import lk.ijse.vaxhub.model.Tm.EmployeeTm;
-import lk.ijse.vaxhub.repository.EmployeeRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.EmployeeBO;
+import lk.ijse.vaxhub.dto.EmployeeDTO;
+import lk.ijse.vaxhub.entity.Employee;
 import lk.ijse.vaxhub.util.ValidationUtil;
+import lk.ijse.vaxhub.view.tdm.EmployeeTm;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -34,46 +36,31 @@ public class EmployeeFormController {
     private TextField EmloyeeContactNumberTextField;
 
     @FXML
-    private TableColumn<?, ?> EmloyeeFirstNameColumn;
-
-    @FXML
-    private TableColumn<?, ?> EmloyeeFirstNameColumn1;
+    private TableColumn<EmployeeTm, String> EmloyeeFirstNameColumn;
 
     @FXML
     private TextField EmloyeeFirstNameTextField;
 
     @FXML
-    private Label EmmployeeLatNameLable;
-
-    @FXML
-    private TableColumn<?, ?> EmployeeAddressColumn;
+    private TableColumn<EmployeeTm, String> EmployeeAddressColumn;
 
     @FXML
     private TextField EmployeeAddressTextField;
 
     @FXML
-    private TableColumn<?, ?> EmployeeContactNumberColumn;
+    private TableColumn<EmployeeTm, String> EmployeeContactNumberColumn;
 
     @FXML
-    private TableColumn<?, ?> EmployeeEmailColumn;
+    private TableColumn<EmployeeTm, String> EmployeeEmailColumn;
 
     @FXML
     private TextField EmployeeEmailTextField;
 
     @FXML
-    private Label EmployeeFNmaeLable;
+    private TableColumn<EmployeeTm, String> EmployeeIdColumn;
 
     @FXML
-    private TableColumn<?, ?> EmployeeIdColumn;
-
-    @FXML
-    private Label EmployeeIdLable;
-
-    @FXML
-    private Label EmployeeIdLable1;
-
-    @FXML
-    private TableColumn<?, ?> EmployeeLastNameColumn;
+    private TableColumn<EmployeeTm, String> EmployeeLastNameColumn;
 
     @FXML
     private TextField EmployeeLastNameTextField;
@@ -82,13 +69,10 @@ public class EmployeeFormController {
     private TableView<EmployeeTm> EmployeeManageTable;
 
     @FXML
-    private Label EmployeeRolLablle;
-
-    @FXML
     private JFXComboBox<String> JobRoleCMB;
 
     @FXML
-    private TableColumn<?, ?> RoleColumn;
+    private TableColumn<EmployeeTm, String> RoleColumn;
 
     @FXML
     private JFXButton clearButton;
@@ -100,9 +84,6 @@ public class EmployeeFormController {
     private TextField employeeidTextField;
 
     @FXML
-    private TextField employeeidTextField1;
-
-    @FXML
     private AnchorPane paneHolder;
 
     @FXML
@@ -110,48 +91,43 @@ public class EmployeeFormController {
 
     @FXML
     private JFXButton updateButton;
-    @FXML
-    private TableColumn<?, ?> locationIdColumn;
 
-
-    private List<Employee> employeeList = new ArrayList<>();
+    private List<EmployeeDTO> employeeList = new ArrayList<>();
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Employee);
 
     public void initialize() {
         this.employeeList = getAllEmployee();
         setCellDataFactory();
         loadAllEmployee();
         setJobRole();
-
     }
 
     private void setJobRole() {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        obList.add("public health officer");
-        obList.add("vaccine clinic manager");
+        obList.add("Public Health Officer");
+        obList.add("Vaccine Clinic Manager");
         obList.add("Vaccine Distribution Coordinator");
         obList.add("Clinical Research Coordinator");
-        obList.add("data entry specialist");
+        obList.add("Data Entry Specialist");
         obList.add("Logistics Coordinator");
-        obList.add("vaccination administer");
-        obList.add("customer service representative ");
-        obList.add("Security Officer ");
+        obList.add("Vaccination Administer");
+        obList.add("Customer Service Representative");
+        obList.add("Security Officer");
         obList.add("Registered Nurse (RN)");
-        obList.add("nurse practitioner");
-        obList.add("pharmacist");
-        obList.add("pharmacy technician");
-        obList.add("medical assistance");
-        obList.add("emergency medical technician ");
+        obList.add("Nurse Practitioner");
+        obList.add("Pharmacist");
+        obList.add("Pharmacy Technician");
+        obList.add("Medical Assistant");
+        obList.add("Emergency Medical Technician");
 
         JobRoleCMB.setItems(obList);
-
     }
 
     private void loadAllEmployee() {
         ObservableList<EmployeeTm> tmList = FXCollections.observableArrayList();
 
-        for (Employee employee : employeeList) {
+        for (EmployeeDTO employee : employeeList) {
             EmployeeTm employeeTm = new EmployeeTm(
-
                     employee.getEmployee_id(),
                     employee.getFirst_name(),
                     employee.getLast_name(),
@@ -161,29 +137,20 @@ public class EmployeeFormController {
                     employee.getContact_number()
             );
             tmList.add(employeeTm);
-
         }
 
         EmployeeManageTable.setItems(tmList);
-        EmployeeTm selectedItem = EmployeeManageTable.getSelectionModel().getSelectedItem();
-        System.out.println("selectedItem = " + selectedItem);
-
-
     }
 
-    private List<Employee> getAllEmployee() {
-        List<Employee> employeeList  = null;
+    private List<EmployeeDTO> getAllEmployee() {
+        List<EmployeeDTO> employeeList = null;
         try {
-            employeeList  = EmployeeRepo.getAll();
-        } catch (SQLException e) {
+            employeeList = employeeBO.getAllEmployee();
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         return employeeList;
     }
-
-
-
-    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
 
     private void setCellDataFactory() {
         EmployeeIdColumn.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
@@ -193,16 +160,12 @@ public class EmployeeFormController {
         EmployeeEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         EmployeeAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         EmployeeContactNumberColumn.setCellValueFactory(new PropertyValueFactory<>("contact_number"));
-
-
-
     }
-
-
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
     @FXML
     void EKeyReleased(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
-            Object respond =  ValidationUtil.validation(map);
+            Object respond = ValidationUtil.validation(map);
             if (respond instanceof TextField) {
                 TextField textField = (TextField) respond;
                 textField.requestFocus();
@@ -215,13 +178,15 @@ public class EmployeeFormController {
     @FXML
     void BackEmployeeAttendanceButtonOnAction(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/employeeattendance_form.fxml"));
-        Pane registePane = (Pane) fxmlLoader.load();
+        Pane registerPane = (Pane) fxmlLoader.load();
         paneHolder.getChildren().clear();
-        paneHolder.getChildren().add(registePane);
+        paneHolder.getChildren().add(registerPane);
     }
 
     @FXML
-    void ClearButtonOnAction(ActionEvent event) {clearFields();}
+    void ClearButtonOnAction(ActionEvent event) {
+        clearFields();
+    }
 
     private void clearFields() {
         employeeidTextField.setText("");
@@ -238,12 +203,12 @@ public class EmployeeFormController {
         String employee_id = employeeidTextField.getText();
 
         try {
-            boolean isDeleted = EmployeeRepo.delete(employee_id);
+            boolean isDeleted = employeeBO.deleteEmployee(employee_id);
             if (isDeleted) {
-                new Alert(Alert.AlertType.CONFIRMATION, "deleted!").show();
+                new Alert(Alert.AlertType.CONFIRMATION, "Deleted!").show();
                 loadAllEmployee();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -252,85 +217,82 @@ public class EmployeeFormController {
     void SaveButtonOnAction() {
         String employee_id = employeeidTextField.getText();
         String first_name = EmloyeeFirstNameTextField.getText();
-        String last_name =  EmployeeLastNameTextField.getText();
+        String last_name = EmployeeLastNameTextField.getText();
         String role = JobRoleCMB.getValue();
         String email = EmployeeEmailTextField.getText();
         String address = EmployeeAddressTextField.getText();
         String contact_number = EmloyeeContactNumberTextField.getText();
 
-        if (employee_id.trim().length() == 0 || first_name.trim().length() == 0 || last_name.trim().length() == 0 || role.trim().length() == 0 || email.trim().length() == 0|| address.trim().length() == 0|| contact_number.trim().length() == 0 ) {
+        if (employee_id.trim().isEmpty() || first_name.trim().isEmpty() || last_name.trim().isEmpty() ||
+                role == null || email.trim().isEmpty() || address.trim().isEmpty() || contact_number.trim().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please fill all the fields").show();
             return;
         }
 
-        Employee employee = new Employee(employee_id,first_name,last_name,role,email,address,contact_number);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee_id, first_name, last_name, role, email, address, contact_number);
 
         try {
-            boolean isSaved = EmployeeRepo.save(employee);
+            boolean isSaved = employeeBO.saveEmployee(employeeDTO);
             if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "saved!").show();
+                new Alert(Alert.AlertType.CONFIRMATION, "Saved!").show();
                 loadAllEmployee();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
-
     }
 
     @FXML
     void UpdateButtonOnAction(ActionEvent event) {
         String employee_id = employeeidTextField.getText();
         String first_name = EmloyeeFirstNameTextField.getText();
-        String last_name =  EmployeeLastNameTextField.getText();
+        String last_name = EmployeeLastNameTextField.getText();
         String role = JobRoleCMB.getValue();
         String email = EmployeeEmailTextField.getText();
         String address = EmployeeAddressTextField.getText();
         String contact_number = EmloyeeContactNumberTextField.getText();
 
-
-        Employee employee = new Employee(employee_id,first_name,last_name,role,email,address,contact_number);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee_id, first_name, last_name, role, email, address, contact_number);
 
         try {
-            boolean isUpdated = EmployeeRepo.update(employee);
+            boolean isUpdated = employeeBO.updateEmployee(employeeDTO);
             if (isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, " updated!").show();
+                new Alert(Alert.AlertType.CONFIRMATION, "Updated!").show();
                 loadAllEmployee();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
     @FXML
     void employeeSearchOnAction(ActionEvent event) {
-        String  employee_id = employeeidTextField.getText();
+        String employee_id = employeeidTextField.getText();
 
         try {
-            Employee employee = EmployeeRepo.searchById( employee_id);
+            Employee employeeDTO = employeeBO.searchEmployee(employee_id);
 
-            if (employee != null) {
-                employeeidTextField.setText(employee.getEmployee_id());
-                EmloyeeFirstNameTextField.setText(employee.getFirst_name());
-                EmployeeLastNameTextField.setText(employee.getLast_name());
-                JobRoleCMB.setValue(employee.getRole());
-                EmployeeEmailTextField.setText(employee.getEmail());
-                EmployeeAddressTextField.setText(employee.getAddress());
-                EmloyeeContactNumberTextField.setText(employee.getContact_number());
-
+            if (employeeDTO != null) {
+                employeeidTextField.setText(employeeDTO.getEmployee_id());
+                EmloyeeFirstNameTextField.setText(employeeDTO.getFirst_name());
+                EmployeeLastNameTextField.setText(employeeDTO.getLast_name());
+                JobRoleCMB.setValue(employeeDTO.getRole());
+                EmployeeEmailTextField.setText(employeeDTO.getEmail());
+                EmployeeAddressTextField.setText(employeeDTO.getAddress());
+                EmloyeeContactNumberTextField.setText(employeeDTO.getContact_number());
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
-
     private void addError(TextField textField) {
-        textField.setStyle("-fx-border-color: red;  -fx-background-radius: 5; -fx-background-radius: 5");
-    }
-    private void removeError(TextField textField) {
-        textField.setStyle("-fx-border-color: green;  -fx-background-radius: 5; -fx-background-radius: 5");
+        textField.setStyle("-fx-border-color: red; -fx-background-radius: 5;");
     }
 
+    private void removeError(TextField textField) {
+        textField.setStyle("-fx-border-color: green; -fx-background-radius: 5;");
+    }
 
     @FXML
     void EAdressKeyReleased(KeyEvent event) {
@@ -338,7 +300,7 @@ public class EmployeeFormController {
         if (!idPattern.matcher(EmployeeAddressTextField.getText()).matches()) {
             addError(EmployeeAddressTextField);
             saveButton.setDisable(true);
-        }else{
+        } else {
             removeError(EmployeeAddressTextField);
             saveButton.setDisable(false);
         }
@@ -350,7 +312,7 @@ public class EmployeeFormController {
         if (!idPattern.matcher(EmloyeeContactNumberTextField.getText()).matches()) {
             addError(EmloyeeContactNumberTextField);
             saveButton.setDisable(true);
-        }else{
+        } else {
             removeError(EmloyeeContactNumberTextField);
             saveButton.setDisable(false);
         }
@@ -362,7 +324,7 @@ public class EmployeeFormController {
         if (!idPattern.matcher(EmloyeeFirstNameTextField.getText()).matches()) {
             addError(EmloyeeFirstNameTextField);
             saveButton.setDisable(true);
-        }else{
+        } else {
             removeError(EmloyeeFirstNameTextField);
             saveButton.setDisable(false);
         }
@@ -374,7 +336,7 @@ public class EmployeeFormController {
         if (!idPattern.matcher(employeeidTextField.getText()).matches()) {
             addError(employeeidTextField);
             saveButton.setDisable(true);
-        }else{
+        } else {
             removeError(employeeidTextField);
             saveButton.setDisable(false);
         }
@@ -386,7 +348,7 @@ public class EmployeeFormController {
         if (!idPattern.matcher(EmployeeLastNameTextField.getText()).matches()) {
             addError(EmployeeLastNameTextField);
             saveButton.setDisable(true);
-        }else{
+        } else {
             removeError(EmployeeLastNameTextField);
             saveButton.setDisable(false);
         }
@@ -398,13 +360,9 @@ public class EmployeeFormController {
         if (!idPattern.matcher(EmployeeEmailTextField.getText()).matches()) {
             addError(EmployeeEmailTextField);
             saveButton.setDisable(true);
-        }else{
+        } else {
             removeError(EmployeeEmailTextField);
             saveButton.setDisable(false);
         }
     }
-
-
-
-
 }

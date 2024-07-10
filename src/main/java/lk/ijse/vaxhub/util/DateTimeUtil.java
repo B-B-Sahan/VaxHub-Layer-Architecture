@@ -1,4 +1,4 @@
-package lk.ijse.vaxhub.controller;
+package lk.ijse.vaxhub.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

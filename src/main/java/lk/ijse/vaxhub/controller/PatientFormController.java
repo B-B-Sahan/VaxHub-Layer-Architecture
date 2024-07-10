@@ -11,116 +11,49 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import lk.ijse.vaxhub.model.Patient;
-import lk.ijse.vaxhub.model.Register;
-import lk.ijse.vaxhub.repository.PatientRepo;
-import lk.ijse.vaxhub.repository.RegisterRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.PatientBO;
+import lk.ijse.vaxhub.bo.custom.RegisterBO;
+import lk.ijse.vaxhub.dto.PatientDTO;
+import lk.ijse.vaxhub.entity.Patient;
+import lk.ijse.vaxhub.entity.Register;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class PatientFormController {
 
     @FXML
-    private Label ADreactLable;
-
-    @FXML
-    private Label DateAdminLable;
+    private Label ADreactLable, DateAdminLable, ParentNicLBL, dateADLable, patientBDLable, patientConNumLable,
+            patientFnAameLable, patientGenderLable, patientIdLable, patientLnameLable;
 
     @FXML
     private DatePicker DatePicker;
 
     @FXML
-    private JFXComboBox<String> GenderCMB;
+    private JFXComboBox<String> GenderCMB, RegisterCMB, reactionCMB, vaccineNmaeCMB;
 
     @FXML
-    private Label ParentNicLBL;
+    private TextField PatientAddressTextField, PatientContactNumberTextField, PatientEmailTextField,
+            PatientFirstNameTextField, PatientHieghtTextField, PatientIdTextField,
+            PatientLastNameTextField, PatientWeightTextField;
 
     @FXML
-    private TextField PatientAddressTextField;
-
-    @FXML
-    private TextField PatientContactNumberTextField;
-
-    @FXML
-    private TextField PatientEmailTextField;
-
-    @FXML
-    private TextField PatientFirstNameTextField;
-
-    @FXML
-    private TextField PatientHieghtTextField;
-
-    @FXML
-    private TextField PatientIdTextField;
-
-    @FXML
-    private TextField PatientLastNameTextField;
-
-    @FXML
-    private TextField PatientWeightTextField;
-
-    @FXML
-    private JFXComboBox<String> RegisterCMB;
-
-    @FXML
-    private JFXButton VaccinationButton;
-
-    @FXML
-    private JFXButton clearButton;
-
-    @FXML
-    private Label dateADLable;
-
-    @FXML
-    private JFXButton deleteButton;
+    private JFXButton VaccinationButton, clearButton, deleteButton, saveButton, updateButton;
 
     @FXML
     private AnchorPane paneHolder;
 
     @FXML
-    private Label patientBDLable;
-
-    @FXML
-    private Label patientConNumLable;
-
-    @FXML
-    private Label patientFnAameLable;
-
-    @FXML
-    private Label patientGenderLable;
-
-    @FXML
-    private Label patientIdLable;
-
-    @FXML
-    private Label patientLnameLable;
-
-    @FXML
-    private JFXComboBox<String> reactionCMB;
-
-    @FXML
-    private JFXButton saveButton;
-
-    @FXML
-    private JFXButton updateButton;
-
-    @FXML
-    private JFXComboBox<String> vaccineNmaeCMB;
-
-    @FXML
     private Hyperlink viewTableHyperLink;
 
-
-
-    private List<Patient> patientList = new ArrayList<>();
+    private PatientBO patientBO = (PatientBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Patient);
+    private RegisterBO registerBO = (RegisterBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Register);
 
     public void initialize() {
-        
         setDate();
         setGender();
         setAdverseReaction();
@@ -130,115 +63,93 @@ public class PatientFormController {
 
     private void getRegisterId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
-
         try {
-            List<String> pIdList = RegisterRepo.getRIds();
+            List<String> pIdList = registerBO.getRIds();
 
-            for (String id : pIdList) {
-                obList.add(id);
-            }
+          for(String id:pIdList)  {
+              obList.add(id);
+          }
             RegisterCMB.setItems(obList);
 
-
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
+
     @FXML
     void RegisterCMBOnAction(ActionEvent event) {
         String id = RegisterCMB.getValue();
         try {
-            Register register = RegisterRepo.searchById(id);
+            Register register = registerBO.searchRegister(id);
             if (register != null) {
                 RegisterCMB.setValue(register.getRegister_id());
-
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
+
     private void setVaccineName() {
-        ObservableList<String> obList = FXCollections.observableArrayList();
-        obList.add("B.C.G");
-        obList.add("DPT 1");
-        obList.add("DPT 2");
-        obList.add("DPT 3");
-        obList.add("DPT 4");
-        obList.add("OPV 1");
-        obList.add("OPV 2");
-        obList.add("OPV 3");
-        obList.add("OPV 4");
-        obList.add("OPV 5");
-        obList.add("Measles");
-        obList.add("Vitamin A");
-        obList.add("Rubella");
-        obList.add("D.T");
-        obList.add("atd");
-        obList.add("JE 1");
-        obList.add("JE 2");
-        obList.add("JE 3");
-        obList.add("JE 4");
-        obList.add("HPV");
+        ObservableList<String> obList = FXCollections.observableArrayList(
+                "B.C.G", "DPT 1", "DPT 2", "DPT 3", "DPT 4", "OPV 1", "OPV 2",
+                "OPV 3", "OPV 4", "OPV 5", "Measles", "Vitamin A", "Rubella",
+                "D.T", "atd", "JE 1", "JE 2", "JE 3", "JE 4", "HPV"
+        );
         vaccineNmaeCMB.setItems(obList);
     }
 
     private void setAdverseReaction() {
-        ObservableList<String> obList = FXCollections.observableArrayList();
-        obList.add("Good");
-        obList.add("Bad");
-        obList.add("None");
+        ObservableList<String> obList = FXCollections.observableArrayList("Good", "Bad", "None");
         reactionCMB.setItems(obList);
     }
 
     private void setGender() {
-        ObservableList<String> obList = FXCollections.observableArrayList();
-        obList.add("Male");
-        obList.add("Female");
+        ObservableList<String> obList = FXCollections.observableArrayList("Male", "Female");
         GenderCMB.setItems(obList);
     }
-
 
     private void setDate() {
         LocalDate now = LocalDate.now();
         DateAdminLable.setText(String.valueOf(now));
     }
 
-
     @FXML
-    void ClearButtonOnAction(ActionEvent event) {clearFields();}
+    void ClearButtonOnAction(ActionEvent event) {
+        clearFields();
+    }
 
     private void clearFields() {
-        PatientIdTextField.setText("");
-        RegisterCMB.setValue(" ");
-        PatientFirstNameTextField.setText("");
-        PatientLastNameTextField.setText("");
-        PatientEmailTextField.setText("");
-        PatientAddressTextField.setText("");
-        PatientContactNumberTextField.setText("");
-
-
-        }
-
+        PatientIdTextField.clear();
+        RegisterCMB.setValue(null);
+        PatientFirstNameTextField.clear();
+        PatientLastNameTextField.clear();
+        PatientEmailTextField.clear();
+        PatientAddressTextField.clear();
+        PatientContactNumberTextField.clear();
+        PatientWeightTextField.clear();
+        PatientHieghtTextField.clear();
+        GenderCMB.setValue(null);
+        reactionCMB.setValue(null);
+        vaccineNmaeCMB.setValue(null);
+        DatePicker.setValue(null);
+    }
 
     @FXML
-    void DeleteButtonOnAction(ActionEvent event)throws SQLException {
+    void DeleteButtonOnAction(ActionEvent event) {
         String patient_id = PatientIdTextField.getText();
-
         try {
-            boolean isDeleted = PatientRepo.delete(patient_id);
+            boolean isDeleted = patientBO.deletePatient(patient_id);
             if (isDeleted) {
-                new Alert(Alert.AlertType.CONFIRMATION, "deleted!").show();
-
+                new Alert(Alert.AlertType.CONFIRMATION, "Patient deleted!").show();
+                clearFields();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
-}
-
-
+    }
 
     @FXML
-    void SaveButtonOnAction(ActionEvent event) throws SQLException {
+    void SaveButtonOnAction(ActionEvent event) {
         String patient_id = PatientIdTextField.getText();
         String register_id = RegisterCMB.getValue();
         String first_name = PatientFirstNameTextField.getText();
@@ -252,25 +163,21 @@ public class PatientFormController {
         String adverse_reaction = reactionCMB.getValue();
         String vaccine_name = vaccineNmaeCMB.getValue();
         String weight_value = PatientWeightTextField.getText();
-        String hight_value = PatientHieghtTextField.getText();
-
-
-
-
-       Patient patient = new Patient(patient_id,register_id, first_name,last_name,gender,birth_day,email, address, contact_number, date_administer, adverse_reaction,vaccine_name,weight_value,hight_value);
+        String height_value = PatientHieghtTextField.getText();
 
         try {
-            boolean isSaved = PatientRepo.save(patient);
+            boolean isSaved = patientBO.savePatient(new PatientDTO(patient_id, register_id, first_name, last_name, gender, birth_day, email, address, contact_number, date_administer, adverse_reaction, vaccine_name, weight_value, height_value));
             if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "patient saved!").show();
+                new Alert(Alert.AlertType.CONFIRMATION, "Patient saved!").show();
+                clearFields();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
-
     }
+
     @FXML
-    void UpdateButtonOnAction(ActionEvent event) throws SQLException {
+    void UpdateButtonOnAction(ActionEvent event) {
         String patient_id = PatientIdTextField.getText();
         String register_id = RegisterCMB.getValue();
         String first_name = PatientFirstNameTextField.getText();
@@ -284,35 +191,31 @@ public class PatientFormController {
         String adverse_reaction = reactionCMB.getValue();
         String vaccine_name = vaccineNmaeCMB.getValue();
         String weight_value = PatientWeightTextField.getText();
-        String hight_value = PatientHieghtTextField.getText();
-
-        Patient patient = new Patient(patient_id,register_id, first_name,last_name,gender,birth_day,email, address, contact_number, date_administer, adverse_reaction,vaccine_name,weight_value,hight_value);
+        String height_value = PatientHieghtTextField.getText();
 
         try {
-            boolean isUpdated = PatientRepo.update(patient);
+            boolean isUpdated = patientBO.updatePatient(new PatientDTO(patient_id, register_id, first_name, last_name, gender, birth_day, email, address, contact_number, date_administer, adverse_reaction, vaccine_name, weight_value, height_value));
             if (isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "patient updated!").show();
+                new Alert(Alert.AlertType.CONFIRMATION, "Patient updated!").show();
+                clearFields();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
-
-
-    public void PTextSearchOnAction(ActionEvent event) throws SQLException {
-        String  patient_id = PatientIdTextField.getText();
-
+    @FXML
+    void PTextSearchOnAction(ActionEvent event) {
+        String patient_id = PatientIdTextField.getText();
         try {
-            Patient patient = PatientRepo.searchById( patient_id);
-
+            Patient patient = patientBO.searchPatient(patient_id);
             if (patient != null) {
                 PatientIdTextField.setText(patient.getPatient_id());
                 RegisterCMB.setValue(patient.getRegister_id());
                 PatientFirstNameTextField.setText(patient.getFirst_name());
                 PatientLastNameTextField.setText(patient.getLast_name());
                 GenderCMB.setValue(patient.getGender());
-                DatePicker.getValue().toString();
+                DatePicker.setValue(LocalDate.parse(patient.getBirth_day()));
                 PatientEmailTextField.setText(patient.getEmail());
                 PatientAddressTextField.setText(patient.getAddress());
                 PatientContactNumberTextField.setText(patient.getContact_number());
@@ -322,139 +225,83 @@ public class PatientFormController {
                 PatientWeightTextField.setText(patient.getWeight_value());
                 PatientHieghtTextField.setText(patient.getHight_value());
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
+
     @FXML
     void VaccinationButtonOnAction(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/vaccination_form.fxml"));
-        Pane registePane = (Pane) fxmlLoader.load();
+        Pane registePane = fxmlLoader.load();
         paneHolder.getChildren().clear();
         paneHolder.getChildren().add(registePane);
     }
 
-
-
-
-
-
-
-
-
-
     @FXML
     void viewTableHyperLinkOnAction(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/patientTable_form.fxml"));
-        Pane registePane = (Pane) fxmlLoader.load();
+        Pane registePane = fxmlLoader.load();
         paneHolder.getChildren().clear();
         paneHolder.getChildren().add(registePane);
     }
 
     private void addError(TextField textField) {
-        textField.setStyle("-fx-border-color: red;  -fx-background-radius: 5; -fx-background-radius: 5");
-    }
-    private void removeError(TextField textField) {
-        textField.setStyle("-fx-border-color: green;  -fx-background-radius: 5; -fx-background-radius: 5");
+        textField.setStyle("-fx-border-color: red; -fx-background-radius: 5;");
     }
 
+    private void removeError(TextField textField) {
+        textField.setStyle("-fx-border-color: green; -fx-background-radius: 5;");
+    }
 
     @FXML
     void PAdressKeyReleased(KeyEvent event) {
-        Pattern idPattern = Pattern.compile("^([A-z0-9]|[-/,.@+]|\\\\s){4,}$");
-        if (!idPattern.matcher(PatientAddressTextField.getText()).matches()) {
-            addError(PatientAddressTextField);
-            saveButton.setDisable(true);
-        }else{
-            removeError(PatientAddressTextField);
-            saveButton.setDisable(false);
-        }
+        validateField(PatientAddressTextField, "^([A-z0-9]|[-/,.@+]|\\\\s){4,}$");
     }
 
     @FXML
     void PEmailKeyReleased(KeyEvent event) {
-        Pattern idPattern = Pattern.compile("^([A-z])([A-z0-9.]){1,}[@]([A-z0-9]){1,10}[.]([A-z]){2,5}$");
-        if (!idPattern.matcher(PatientEmailTextField.getText()).matches()) {
-            addError(PatientEmailTextField);
-            saveButton.setDisable(true);
-        }else{
-            removeError(PatientEmailTextField);
-            saveButton.setDisable(false);
-        }
+        validateField(PatientEmailTextField, "^([A-z])([A-z0-9.]{1,})[@]([A-z0-9]{1,10})[.]([A-z]{2,5})$");
     }
 
     @FXML
     void PFnameKeyReleased(KeyEvent event) {
-        Pattern idPattern = Pattern.compile("^[a-zA-Z ]*$");
-        if (!idPattern.matcher(PatientFirstNameTextField.getText()).matches()) {
-            addError(PatientFirstNameTextField);
-            saveButton.setDisable(true);
-        }else{
-            removeError(PatientFirstNameTextField);
-            saveButton.setDisable(false);
-        }
+        validateField(PatientFirstNameTextField, "^[a-zA-Z ]*$");
     }
 
     @FXML
     void PHieghtKeyReleased(KeyEvent event) {
-        Pattern idPattern = Pattern.compile("^[a-zA-Z 0-9]*$");
-        if (!idPattern.matcher(PatientHieghtTextField.getText()).matches()) {
-            addError(PatientHieghtTextField);
-            saveButton.setDisable(true);
-        }else{
-            removeError(PatientHieghtTextField);
-            saveButton.setDisable(false);
-        }
+        validateField(PatientHieghtTextField, "^[a-zA-Z 0-9]*$");
     }
 
     @FXML
     void PIdKeyReleased(KeyEvent event) {
-        Pattern idPattern = Pattern.compile("^([A-z0-9]){1,12}$");
-        if (!idPattern.matcher(PatientIdTextField.getText()).matches()) {
-            addError(PatientIdTextField);
-            saveButton.setDisable(true);
-        }else{
-            removeError(PatientIdTextField);
-            saveButton.setDisable(false);
-        }
+        validateField(PatientIdTextField, "^([A-z0-9]{1,12})$");
     }
 
     @FXML
     void PLnamekeyrealased(KeyEvent event) {
-        Pattern idPattern = Pattern.compile("^[a-zA-Z ]*$");
-        if (!idPattern.matcher(PatientLastNameTextField.getText()).matches()) {
-            addError(PatientLastNameTextField);
-            saveButton.setDisable(true);
-        }else{
-            removeError(PatientLastNameTextField);
-            saveButton.setDisable(false);
-        }
+        validateField(PatientLastNameTextField, "^[a-zA-Z ]*$");
     }
 
     @FXML
     void PchildweightKeyReleased(KeyEvent event) {
-        Pattern idPattern = Pattern.compile("^[a-zA-Z 0-9]*$");
-        if (!idPattern.matcher(PatientWeightTextField.getText()).matches()) {
-            addError(PatientWeightTextField);
-            saveButton.setDisable(true);
-        }else{
-            removeError(PatientWeightTextField);
-            saveButton.setDisable(false);
-        }
+        validateField(PatientWeightTextField, "^[a-zA-Z 0-9]*$");
     }
 
     @FXML
     void PconKeyReleased(KeyEvent event) {
-        Pattern idPattern = Pattern.compile("^[0-9]{10}$");
-        if (!idPattern.matcher(PatientContactNumberTextField.getText()).matches()) {
-            addError(PatientContactNumberTextField);
+        validateField(PatientContactNumberTextField, "^[0-9]{10}$");
+    }
+
+    private void validateField(TextField textField, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        if (!pattern.matcher(textField.getText()).matches()) {
+            addError(textField);
             saveButton.setDisable(true);
-        }else{
-            removeError(PatientContactNumberTextField);
+        } else {
+            removeError(textField);
             saveButton.setDisable(false);
         }
     }
-
-
-
 }

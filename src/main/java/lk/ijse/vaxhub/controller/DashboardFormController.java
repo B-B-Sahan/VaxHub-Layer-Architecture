@@ -5,14 +5,14 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Label;
-import lk.ijse.vaxhub.repository.AppoimentRepo;
-import lk.ijse.vaxhub.repository.EmployeeAttendanceRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.AppoimentBO;
 
 import java.sql.SQLException;
 
 public class DashboardFormController {
-    @FXML
-    private BarChart<?, ?> paymentBarchart;
+ /*   @FXML
+   private BarChart<?, ?> paymentBarchart;
 
     @FXML
     private Label appoimentcountLable;
@@ -32,7 +32,7 @@ public class DashboardFormController {
     @FXML
     private Label usernameLable;
 
-
+   AppoimentBO appoimentBO = (AppoimentBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.Appoiment);
     public void initialize() throws SQLException {
 
         getEmpolyeeAttendance();
@@ -40,14 +40,14 @@ public class DashboardFormController {
        // setDataToBarChart();
     }
 
-  /*  private void setDataToBarChart() {
+   private void setDataToBarChart() {
         ObservableList<XYChart.Series<String, Integer>> barChartData = PaymentRepo.getDataToBarChart();
 
         paymentchart.setData(barChartData);
 
-    }*/
+    }
 
-    private void getAppoimentCount() {
+   private void getAppoimentCount() {
 
         AppoimentRepo appoimentRepo = new AppoimentRepo();
 
@@ -73,7 +73,7 @@ public class DashboardFormController {
         }
 
 
-    }
+    }*/
 
 
 }

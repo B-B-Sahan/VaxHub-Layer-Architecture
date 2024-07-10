@@ -102,7 +102,7 @@
       <Line endX="302.6666564941406" layoutX="194.0" layoutY="793.0" startX="-114.66666412353516" />
       <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="521.0">
          <image>
-            <Image url="@../../../../../../AutoCareCenter/src/main/resources/asserts/icons8-email-50.png" />
+            <Image url="@../assets.icon/email.png" />
          </image>
       </ImageView>
       <TextField fx:id="EmailTextField" layoutX="141.0" layoutY="514.0" onKeyReleased="#USEREmailOnKeyReleased" prefHeight="27.0" prefWidth="356.0" promptText="Input your email here" style="-fx-background-radius: 5;">

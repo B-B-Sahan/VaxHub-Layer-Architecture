@@ -10,13 +10,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.vaxhub.model.Appoiment;
-import lk.ijse.vaxhub.model.Patient;
-import lk.ijse.vaxhub.model.Payment;
-import lk.ijse.vaxhub.model.Tm.PaymentTm;
-import lk.ijse.vaxhub.repository.AppoimentRepo;
-import lk.ijse.vaxhub.repository.PatientRepo;
-import lk.ijse.vaxhub.repository.PaymentRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.AppoimentBO;
+import lk.ijse.vaxhub.bo.custom.PatientBO;
+import lk.ijse.vaxhub.bo.custom.PaymentBO;
+import lk.ijse.vaxhub.bo.custom.RegisterBO;
+import lk.ijse.vaxhub.dto.PatientDTO;
+import lk.ijse.vaxhub.dto.PaymentDTO;
+import lk.ijse.vaxhub.entity.Appoiment;
+import lk.ijse.vaxhub.entity.Patient;
+import lk.ijse.vaxhub.entity.Payment;
+import lk.ijse.vaxhub.view.tdm.PaymentTm;
+
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -84,33 +89,15 @@ public class PaymentFormController {
     @FXML
     private JFXButton updateButton;
 
-
-
-
+    private List<PaymentDTO> paymentList = new ArrayList<>();
+    PatientBO patientBO  = (PatientBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Patient);
+    AppoimentBO appoimentBO  = (AppoimentBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Appoiment);
+    PaymentBO paymentBO  = (PaymentBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Payment);
 
     @FXML
     void APOnKeyReleased(KeyEvent event) {
 
     }
-
-    @FXML
-    void AppoimentCMBCMBOnAction(ActionEvent event) {
-        String id = AppoimentIdCMB.getValue();
-        try {
-            Appoiment appoiment = AppoimentRepo.searchById(id);
-            if (appoiment != null) {
-                AppoimentIdCMB.setValue(appoiment.getAppoiment_id());
-
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-
-    private List<Payment> paymentList = new ArrayList<>();
-
     public void initialize() {
         this.paymentList = getAllPayment();
         setCellDataFactory();
@@ -120,66 +107,21 @@ public class PaymentFormController {
         getAppoimentId();
     }
 
-    private void getAppoimentId() {
-        ObservableList<String> obList = FXCollections.observableArrayList();
-
+    private List<PaymentDTO> getAllPayment() {
+        List<PaymentDTO> paymentList  = null;
         try {
-            List<String> pIdList = PaymentRepo.getPIds();
-
-            for (String id : pIdList) {
-                obList.add(id);
-            }
-            AppoimentIdCMB.setItems(obList);
-
-
-        } catch (SQLException e) {
+            paymentList  = paymentBO.getAllPayment();
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+        return paymentList;
 
-
-
-    private void getParentId() {
-        ObservableList<String> obList = FXCollections.observableArrayList();
-
-        try {
-            List<String> pIdList = PatientRepo.getPIds();
-
-            for (String id : pIdList) {
-                obList.add(id);
-            }
-            ParentNICCMB.setItems(obList);
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void setDate() {
-        LocalDate now = LocalDate.now();
-        DateAdminLable.setText(String.valueOf(now));
-    }
-
-
-    @FXML
-    void ParentNICCMBOnAction(ActionEvent event) {
-        String id = ParentNICCMB.getValue();
-        try {
-            Patient patient = PatientRepo.searchById(id);
-            if (patient != null) {
-                ParentNicLBL.setText(patient.getPatient_id());
-
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void loadAllPayment() {
         ObservableList<PaymentTm> tmList = FXCollections.observableArrayList();
 
-        for (Payment payment : paymentList) {
+        for (PaymentDTO payment : paymentList) {
             PaymentTm paymentTm = new PaymentTm(
 
                     payment.getPayment_id(),
@@ -200,6 +142,84 @@ public class PaymentFormController {
 
     }
 
+    @FXML
+    void AppoimentCMBCMBOnAction(ActionEvent event) {
+        String id = AppoimentIdCMB.getValue();
+        try {
+            Appoiment appoiment = appoimentBO.searchAppoiment(id);
+            if (appoiment != null) {
+                AppoimentIdCMB.setValue(appoiment.getAppoiment_id());
+
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+
+
+
+    private void getAppoimentId() {
+        ObservableList<String> obList = FXCollections.observableArrayList();
+
+        try {
+            List<String> pIdList = appoimentBO.getAIds();
+
+            for (String id : pIdList) {
+                obList.add(id);
+            }
+            AppoimentIdCMB.setItems(obList);
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    private void getParentId() {
+        ObservableList<String> obList = FXCollections.observableArrayList();
+
+        try {
+            List<String> pIdList = patientBO.getPIds();
+
+            for (String id : pIdList) {
+                obList.add(id);
+            }
+            ParentNICCMB.setItems(obList);
+
+
+        }  catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setDate() {
+        LocalDate now = LocalDate.now();
+        DateAdminLable.setText(String.valueOf(now));
+    }
+
+
+    @FXML
+    void ParentNICCMBOnAction(ActionEvent event) {
+        String id = ParentNICCMB.getValue();
+        try {
+            Patient patient = patientBO.searchPatient(id);
+            if (patient != null) {
+                ParentNICCMB.setValue(patient.getPatient_id());
+
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
     private void setCellDataFactory() {
         PaymentIdColumn.setCellValueFactory(new PropertyValueFactory<>("payment_id"));
         appoimentidColumn.setCellValueFactory(new PropertyValueFactory<>("appoiment_id"));
@@ -210,16 +230,7 @@ public class PaymentFormController {
     }
 
 
-    private List<Payment> getAllPayment() {
-        List<Payment> paymentList  = null;
-        try {
-            paymentList  = PaymentRepo.getAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return paymentList;
 
-    }
 
     @FXML
     void ClearButtonOnAction(ActionEvent event) {clearFields();}
@@ -237,12 +248,12 @@ public class PaymentFormController {
         String patient_id = ParentNICCMB.getValue();
 
         try {
-            boolean isDeleted = PaymentRepo.delete(patient_id);
+            boolean isDeleted = paymentBO.deletePayment(patient_id);
             if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "deleted!").show();
                 loadAllPayment();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -260,12 +271,12 @@ public class PaymentFormController {
        Payment payment = new Payment(payment_id,appoiment_id,patient_id,amount,payment_date);
 
         try {
-            boolean isSaved = PaymentRepo.save(payment);
+            boolean isSaved = paymentBO.savePayment(new PaymentDTO(payment_id,appoiment_id,patient_id,amount,payment_date));
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION, "saved!").show();
                 loadAllPayment();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -283,12 +294,12 @@ public class PaymentFormController {
         Payment payment = new Payment(payment_id,appoiment_id,patient_id,amount,payment_date);
 
         try {
-            boolean isUpdated = PaymentRepo.update(payment);
+            boolean isUpdated = paymentBO.updatePayment(new PaymentDTO(payment_id,appoiment_id,patient_id,amount,payment_date));
             if (isUpdated) {
                 new Alert(Alert.AlertType.CONFIRMATION, " updated!").show();
                 loadAllPayment();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -298,7 +309,7 @@ public class PaymentFormController {
         String  patient_id = ParentNICCMB.getValue();
 
         try {
-            Payment payment = PaymentRepo.searchById( patient_id);
+            Payment payment = paymentBO.searchPayment( patient_id);
 
             if (payment != null) {
                 PaymentIdTextField.setText(payment.getPayment_id());
@@ -309,7 +320,7 @@ public class PaymentFormController {
 
 
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }

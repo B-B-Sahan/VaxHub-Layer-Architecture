@@ -1,7 +1,6 @@
 package lk.ijse.vaxhub.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,21 +8,34 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import lk.ijse.vaxhub.model.Employee;
-import lk.ijse.vaxhub.model.EmployeeAttendance;
-import lk.ijse.vaxhub.model.Tm.EmployeeAttendanceTm;
-import lk.ijse.vaxhub.repository.EmployeeAttendanceRepo;
-import lk.ijse.vaxhub.repository.EmployeeRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.EmployeeAttendanceBO;
+import lk.ijse.vaxhub.bo.custom.EmployeeBO;
+import lk.ijse.vaxhub.dto.EmployeeAttendanceDTO;
+import lk.ijse.vaxhub.entity.Employee;
+import lk.ijse.vaxhub.entity.EmployeeAttendance;
+
+
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+
+import com.jfoenix.controls.JFXComboBox;
+import javafx.scene.control.Label;
+import lk.ijse.vaxhub.view.tdm.EmployeeAttendanceTm;
 
 public class EmployeeAttendanceController {
 
@@ -86,7 +98,9 @@ public class EmployeeAttendanceController {
     private JFXButton updateButton;
 
 
-    private List<EmployeeAttendance> employeeAttendanceList = new ArrayList<>();
+    private List<EmployeeAttendanceDTO> employeeAttendanceList = new ArrayList<>();
+    EmployeeAttendanceBO employeeAttendanceBO  = (EmployeeAttendanceBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Employee_Attendance);
+    EmployeeBO employeeBO  = (EmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Employee);
 
     public void initialize() {
         this.employeeAttendanceList = getAllEmployeeAttendance();
@@ -98,12 +112,20 @@ public class EmployeeAttendanceController {
 
 
     }
-
+    private List<EmployeeAttendanceDTO> getAllEmployeeAttendance() {
+        List<EmployeeAttendanceDTO> employeeAttendanceList = null;
+        try {
+            employeeAttendanceList = employeeAttendanceBO.getAllEmployeeAttendance();
+        }  catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return employeeAttendanceList;
+    }
     private void getEmployeeId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<String> IdList = EmployeeRepo.getIds();
+            List<String> IdList = employeeBO.getIds();
 
             for (String id : IdList) {
                 obList.add(id);
@@ -111,7 +133,7 @@ public class EmployeeAttendanceController {
             EmployeeIdCMB.setItems(obList);
 
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -120,12 +142,14 @@ public class EmployeeAttendanceController {
     void EmployeeIdCMBOnAction(ActionEvent event) {
         String id = EmployeeIdCMB.getValue();
         try {
-            Employee employee = EmployeeRepo.searchById(id);
+            Employee employee = employeeBO.searchEmployee(id);
             if (employee != null) {
-                EmployeeIdLBL.setText(employee.getEmployee_id());
+                EmployeeIdCMB.setValue(employee.getEmployee_id());
 
             }
-        } catch (SQLException e) {
+
+
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -146,7 +170,7 @@ public class EmployeeAttendanceController {
 
         ObservableList<EmployeeAttendanceTm> tmList = FXCollections.observableArrayList();
 
-        for (EmployeeAttendance employeeAttendance : employeeAttendanceList) {
+        for (EmployeeAttendanceDTO employeeAttendance : employeeAttendanceList) {
             EmployeeAttendanceTm employeeAttendanceTm = new EmployeeAttendanceTm(
 
                     employeeAttendance.getAttendance_id(),
@@ -166,15 +190,7 @@ public class EmployeeAttendanceController {
         System.out.println("selectedItem = " + selectedItem);
     }
 
-    private List<EmployeeAttendance> getAllEmployeeAttendance() {
-        List<EmployeeAttendance> employeeAttendanceList = null;
-        try {
-           employeeAttendanceList = EmployeeAttendanceRepo.getAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return employeeAttendanceList;
-    }
+
 
 
     private void setCellDataFactory() {
@@ -201,7 +217,8 @@ public class EmployeeAttendanceController {
     }
 
     @FXML
-    void ClearButtonOnAction(ActionEvent event) {clearFields();}
+    void ClearButtonOnAction(ActionEvent event) {
+        clearFields();}
 
     private void clearFields() {
         AttendanceIdTextField.setText("");
@@ -218,12 +235,12 @@ public class EmployeeAttendanceController {
         String attendance_id =AttendanceIdTextField.getText();
 
         try {
-            boolean isDeleted = EmployeeAttendanceRepo.delete(attendance_id);
+            boolean isDeleted = employeeAttendanceBO.deleteEmployeeAttendance(attendance_id);
             if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "deleted!").show();
                 loadAllAttendance();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e)  {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -242,7 +259,7 @@ public class EmployeeAttendanceController {
     }
 
     @FXML
-    void SaveButtonOnAction() {
+    void SaveButtonOnAction(ActionEvent event) {
         String  attendance_id = AttendanceIdTextField.getText();
         String employee_id = EmployeeIdCMB.getValue();
         String date = DateLable.getText();
@@ -259,13 +276,13 @@ public class EmployeeAttendanceController {
         EmployeeAttendance employeeAttendance = new EmployeeAttendance(attendance_id,employee_id,date,in_time,out_time,attendance);
 
         try {
-            boolean isSaved = EmployeeAttendanceRepo.save(employeeAttendance);
+            boolean isSaved = employeeAttendanceBO.saveEmployeeAttendance(new EmployeeAttendanceDTO(attendance_id,employee_id,date,in_time,out_time,attendance));
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION, " saved!").show();
-
+                clearFields();
                 loadAllAttendance();
             }
-        } catch (SQLException e) {
+        }  catch (SQLException | ClassNotFoundException e){
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
@@ -286,12 +303,12 @@ public class EmployeeAttendanceController {
         EmployeeAttendance employeeAttendance = new EmployeeAttendance(attendance_id, employee_id ,date,in_time,out_time,attendance);
 
         try {
-            boolean isUpdated = EmployeeAttendanceRepo.update(employeeAttendance);
+            boolean isUpdated = employeeAttendanceBO.updateEmployeeAttendance(new EmployeeAttendanceDTO(attendance_id,employee_id,date,in_time,out_time,attendance));
             if (isUpdated) {
                 new Alert(Alert.AlertType.CONFIRMATION, "updated!").show();
                 loadAllAttendance();
             }
-        } catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -301,7 +318,7 @@ public class EmployeeAttendanceController {
         String  employee_id = EmployeeIdCMB.getValue();
 
         try {
-            EmployeeAttendance employeeAttendance = EmployeeAttendanceRepo.searchById( employee_id );
+            EmployeeAttendance employeeAttendance = employeeAttendanceBO.searchEmployeeAttendance( employee_id );
 
             if (employeeAttendance != null) {
                 AttendanceIdTextField.setText(employeeAttendance.getAttendance_id());
@@ -311,7 +328,7 @@ public class EmployeeAttendanceController {
                 OutTimeTextField.setText(employeeAttendance.getOut_time());
                 AtenndanceCMB.setValue(employeeAttendance.getAttendance());
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e){
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }

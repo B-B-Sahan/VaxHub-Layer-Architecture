@@ -13,7 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.PatientBO;
+import lk.ijse.vaxhub.bo.custom.SignUpBO;
 import lk.ijse.vaxhub.db.DbConnection;
+import lk.ijse.vaxhub.entity.User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -45,36 +49,31 @@ public class SignUpFormController {
     private TextField useridTextField;
 
 
-
+    SignUpBO signUpBO  = (SignUpBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SignUp);
 
 
     @FXML
-    void SignupButtonOnAction(ActionEvent event) {
+    void SignupButtonOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String user_id = useridTextField.getText();
         String name = userNammeTextField.getText();
         String password = passwordTextField.getText();
         String email = EmailTextField.getText();
 
-        saveUser(user_id, name, password,email);
-    }
-
-    private void saveUser(String user_id, String name, String password, String email) {
-        try {
-            String sql = "INSERT INTO user VALUES(?, ?, ?,?)";
-
-            Connection connection = DbConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setObject(1, user_id);
-            pstm.setObject(2, name);
-            pstm.setObject(3, password);
-            pstm.setObject(4, email);
-            if(pstm.executeUpdate() > 0) {
-                new Alert(Alert.AlertType.CONFIRMATION, "user saved!").show();
+        User user = signUpBO.checkCredential(user_id, password);
+        if (user != null && user.getUser_id().equals(user_id)) {
+            new Alert(Alert.AlertType.ERROR, "User ID already exists!").show();
+        }else {
+            boolean isSave = signUpBO.save(new User(user_id, name, password, email));
+            if (isSave) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Successfully Added").show();
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Something went wrong").show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "something happend!").show();
         }
     }
+
+
+
 
     @FXML
     void loginLinkOnAction(ActionEvent event) throws IOException {

@@ -8,9 +8,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.vaxhub.model.Patient;
-import lk.ijse.vaxhub.model.Report;
-import lk.ijse.vaxhub.repository.PatientRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.EmployeeBO;
+import lk.ijse.vaxhub.bo.custom.PatientBO;
+import lk.ijse.vaxhub.dto.PatientDTO;
+import lk.ijse.vaxhub.entity.Patient;
+
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -70,7 +73,8 @@ public class ReportFormController {
     @FXML
     private AnchorPane patientReportAnchorpane;
 
-    private List<Report> reportList = new ArrayList<>();
+    private List<PatientDTO> patientList = new ArrayList<>();
+    PatientBO patientBO  = (PatientBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Patient);
 
     public void initialize() {
         getParentId();
@@ -82,7 +86,7 @@ public class ReportFormController {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<String> pIdList = PatientRepo.getPIds();
+            List<String> pIdList = patientBO.getPIds();
 
             for (String id : pIdList) {
                 obList.add(id);
@@ -90,7 +94,7 @@ public class ReportFormController {
             PatientIdComboBox.setItems(obList);
 
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -100,7 +104,7 @@ public class ReportFormController {
     void PatientIdComboBoxOnAction(ActionEvent event) {
         String id = PatientIdComboBox.getValue();
         try {
-            Patient patient = PatientRepo.searchById(id);
+            Patient patient = patientBO.searchPatient(id);
             if (patient != null) {
                 PatientIdLable.setText(patient.getPatient_id());
                 PatientNameLable.setText(patient.getFirst_name());
@@ -112,7 +116,7 @@ public class ReportFormController {
 
 
             }
-        } catch (SQLException e) {
+        }  catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

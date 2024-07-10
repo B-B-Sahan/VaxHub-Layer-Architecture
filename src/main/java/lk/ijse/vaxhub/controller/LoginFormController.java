@@ -13,7 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.EmployeeBO;
+import lk.ijse.vaxhub.bo.custom.LoginBO;
 import lk.ijse.vaxhub.db.DbConnection;
+import lk.ijse.vaxhub.entity.User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -42,42 +46,36 @@ public class LoginFormController {
     @FXML
     private TextField useridTextField;
 
-
+    LoginBO loginBO  = (LoginBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Login);
 
     @FXML
     void loginButtonOnAction(ActionEvent event) {
         String userId = useridTextField.getText();
         String pw = passwordTextField.getText();
-
         try {
-            checkCredential(userId, pw);
-        } catch (SQLException | IOException e) {
-            new Alert(Alert.AlertType.ERROR, "OOPS! something went wrong").show();
-        }
-    }
-
-    private void checkCredential(String userId, String pw) throws SQLException, IOException {
-        String sql = "SELECT user_id, password FROM user WHERE user_id = ?";
-
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setObject(1, userId);
-
-        ResultSet resultSet = pstm.executeQuery();
-        if(resultSet.next()) {
-            String dbPw = resultSet.getString(2);
-
-            if(dbPw.equals(pw)) {
-                navigateToTheDashboard();
+            User user = loginBO.checkCredential(userId, pw);
+            if (user != null) {
+                String dbpw = user.getPassword();
+                if (dbpw.equals(pw)) {
+                    navigateToTheDashboard();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Password is incorrect!").show();
+                }
             } else {
-                new Alert(Alert.AlertType.ERROR, "Password is incorrect!").show();
+                new Alert(Alert.AlertType.INFORMATION, "user id not found!").show();
             }
-        } else {
-            new Alert(Alert.AlertType.INFORMATION, "user id not found!").show();
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR,"Database error: " + e.getMessage()).show();
+            e.printStackTrace();
+        }catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,"Something went wrong!").show();
+            e.printStackTrace();
         }
 
 
     }
+
+
 
 
     private void navigateToTheDashboard() throws IOException {

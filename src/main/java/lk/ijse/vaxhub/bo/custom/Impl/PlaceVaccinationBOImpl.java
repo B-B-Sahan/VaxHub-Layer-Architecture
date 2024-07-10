@@ -1,13 +1,11 @@
 package lk.ijse.vaxhub.bo.custom.Impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lk.ijse.vaxhub.bo.custom.PlaceVaccinationBO;
+import lk.ijse.vaxhub.dto.PlaceVaccinationDTO;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-public class PlaceVaccinationBOImpl {
-    private VaccineBOImpl vaccine;
-    private VaccinationBOImpl vaccination;
+public class PlaceVaccinationBOImpl implements PlaceVaccinationBO {
+    @Override
+    public boolean placeVaccination(PlaceVaccinationDTO placeVaccinationDTO) {
+        return false;
+    }
 }

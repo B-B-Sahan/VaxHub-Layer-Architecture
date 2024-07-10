@@ -11,9 +11,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import lk.ijse.vaxhub.model.Patient;
-import lk.ijse.vaxhub.model.Tm.PatientTm;
-import lk.ijse.vaxhub.repository.PatientRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.PatientBO;
+import lk.ijse.vaxhub.dto.PatientDTO;
+import lk.ijse.vaxhub.entity.Patient;
+import lk.ijse.vaxhub.view.tdm.PatientTm;
+
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -77,7 +80,8 @@ public class PatientTableController {
     private TableColumn<?, ?> weightValueClm;
 
 
-        private List<Patient> patientList = new ArrayList<>();
+        private List<PatientDTO> patientList = new ArrayList<>();
+    PatientBO patientBO  = (PatientBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Patient);
 
         public void initialize() {
             this.patientList = getAllPatient();
@@ -88,7 +92,7 @@ public class PatientTableController {
         private void loadAllPatients() {
             ObservableList<PatientTm> tmList = FXCollections.observableArrayList();
 
-            for (Patient patient : patientList) {
+            for (PatientDTO patient : patientList) {
                 PatientTm patientTm = new PatientTm(
 
                         patient.getPatient_id(),
@@ -118,11 +122,11 @@ public class PatientTableController {
 
         }
 
-        private List<Patient> getAllPatient() {
-            List<Patient> patientList = null;
+        private List<PatientDTO> getAllPatient() {
+            List<PatientDTO> patientList = null;
             try {
-                patientList = PatientRepo.getAll();
-            } catch (SQLException e) {
+                patientList = patientBO.getAllPatient();
+            } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
             return patientList;

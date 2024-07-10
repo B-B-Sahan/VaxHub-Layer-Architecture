@@ -10,11 +10,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.vaxhub.model.Employee;
-import lk.ijse.vaxhub.model.Tm.VaccineTm;
-import lk.ijse.vaxhub.model.Vaccine;
-import lk.ijse.vaxhub.repository.EmployeeRepo;
-import lk.ijse.vaxhub.repository.VaccineRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.EmployeeBO;
+import lk.ijse.vaxhub.bo.custom.VaccineBO;
+import lk.ijse.vaxhub.dto.VaccineDTO;
+import lk.ijse.vaxhub.entity.Employee;
+import lk.ijse.vaxhub.entity.Vaccine;
+
+import lk.ijse.vaxhub.view.tdm.VaccineTm;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -80,11 +83,14 @@ public class VaccineFormController {
 
     @FXML
     private JFXComboBox<String> vaccineNmaeCMB;
+    private List<VaccineDTO> vaccineList = new ArrayList<>();
+    EmployeeBO employeeBO  = (EmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Employee);
+    VaccineBO vaccineBO  = (VaccineBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Vaccine);
 
 
 
 
-    private List<Vaccine> vaccineList = new ArrayList<>();
+
     public void initialize() {
         this.vaccineList = getAllVaccine();
         setCellDataFactory();
@@ -98,7 +104,7 @@ public class VaccineFormController {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<String> IdList = EmployeeRepo.getIds();
+            List<String> IdList = employeeBO.getIds();
 
             for (String id : IdList) {
                 obList.add(id);
@@ -106,7 +112,7 @@ public class VaccineFormController {
             EmployeeIdCMB.setItems(obList);
 
 
-        } catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -114,12 +120,12 @@ public class VaccineFormController {
     void EmployeeIdCMBOnAction(ActionEvent event) {
         String id = EmployeeIdCMB.getValue();
         try {
-            Employee employee = EmployeeRepo.searchById(id);
+            Employee employee = employeeBO.searchEmployee(id);
             if (employee != null) {
                 EmployeeIdLBL.setText(employee.getEmployee_id());
 
             }
-        } catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e){
             throw new RuntimeException(e);
         }
     }
@@ -157,7 +163,7 @@ public class VaccineFormController {
     private void loadAllVaccine() {
         ObservableList<VaccineTm> tmList = FXCollections.observableArrayList();
 
-        for (Vaccine vaccine : vaccineList) {
+        for (VaccineDTO vaccine : vaccineList) {
             VaccineTm vaccineTm = new VaccineTm(
                     vaccine.getVaccine_id(),
                     vaccine.getEmployee_id(),
@@ -186,11 +192,11 @@ public class VaccineFormController {
         QuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
     }
 
-    private List<Vaccine> getAllVaccine() {
-        List<Vaccine> vaccineList  = null;
+    private List<VaccineDTO> getAllVaccine() {
+        List<VaccineDTO> vaccineList  = null;
         try {
-            vaccineList  = VaccineRepo.getAll();
-        } catch (SQLException e) {
+            vaccineList  = vaccineBO.getAllVaccine();
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         return vaccineList;
@@ -214,12 +220,12 @@ public class VaccineFormController {
         String vaccine_id = VaccineIdTextField.getText();
 
         try {
-            boolean isDeleted = VaccineRepo.delete(vaccine_id);
+            boolean isDeleted = vaccineBO.deleteVaccine(vaccine_id);
             if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "deleted!").show();
                 loadAllVaccine();
             }
-        } catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -237,12 +243,12 @@ public class VaccineFormController {
         Vaccine vaccine = new Vaccine(vaccine_id,employee_id,vaccine_name,vaccine_date,manufacture,quantity);
 
         try {
-            boolean isSaved = VaccineRepo.save(vaccine);
+            boolean isSaved = vaccineBO.saveVaccine(new VaccineDTO(vaccine_id,employee_id,vaccine_name,vaccine_date,manufacture,quantity));
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION, "saved!").show();
                 loadAllVaccine();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
@@ -261,12 +267,12 @@ public class VaccineFormController {
 
 
         try {
-            boolean isUpdated = VaccineRepo.update(vaccine);
+            boolean isUpdated = vaccineBO.updateVaccine(new VaccineDTO(vaccine_id,employee_id,vaccine_name,vaccine_date,manufacture,quantity));
             if (isUpdated) {
                 new Alert(Alert.AlertType.CONFIRMATION, " updated!").show();
                 loadAllVaccine();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -277,7 +283,7 @@ public class VaccineFormController {
         String  vaccine_name = vaccineNmaeCMB.getValue();
 
         try {
-            Vaccine vaccine = VaccineRepo.searchById( vaccine_name);
+            Vaccine vaccine = vaccineBO.searchVaccine( vaccine_name);
 
             if (vaccine != null) {
                 VaccineIdTextField.setText(vaccine.getVaccine_id());
@@ -288,7 +294,7 @@ public class VaccineFormController {
                 QuantityTextField.setText(vaccine.getQuantity());
 
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             loadAllVaccine();
         }

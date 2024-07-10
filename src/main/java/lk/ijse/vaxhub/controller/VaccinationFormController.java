@@ -14,15 +14,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import lk.ijse.vaxhub.model.Patient;
-import lk.ijse.vaxhub.model.PlaceVaccination;
-import lk.ijse.vaxhub.model.Tm.VaccinationTm;
-import lk.ijse.vaxhub.model.Vaccination;
-import lk.ijse.vaxhub.model.Vaccine;
-import lk.ijse.vaxhub.repository.PatientRepo;
-import lk.ijse.vaxhub.repository.PlaceVaccinationRepo;
-import lk.ijse.vaxhub.repository.VaccinationRepo;
-import lk.ijse.vaxhub.repository.VaccineRepo;
+import lk.ijse.vaxhub.bo.BOFactory;
+import lk.ijse.vaxhub.bo.custom.*;
+import lk.ijse.vaxhub.dto.PlaceVaccinationDTO;
+import lk.ijse.vaxhub.dto.VaccinationDTO;
+import lk.ijse.vaxhub.dto.VaccineDTO;
+import lk.ijse.vaxhub.entity.Patient;
+import lk.ijse.vaxhub.entity.PlaceVaccination;
+import lk.ijse.vaxhub.entity.Vaccination;
+import lk.ijse.vaxhub.entity.Vaccine;
+import lk.ijse.vaxhub.view.tdm.VaccinationTm;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -86,8 +87,11 @@ public class VaccinationFormController {
 
     private Vaccine vaccine = null;
 
-
-    private List<Vaccination> vaccinationList = new ArrayList<>();
+    PatientBO patientBO  = (PatientBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Patient);
+    VaccineBO vaccineBO  = (VaccineBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Vaccine);
+    VaccinationBO vaccinationBO  = (VaccinationBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Vaccination);
+    PlaceVaccinationBO placeVaccinationBO  = (PlaceVaccinationBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.Place_Vaccination);
+    private List<VaccinationDTO> vaccinationList = new ArrayList<>();
     public void initialize() {
 
         this.vaccinationList = getAllVaccination();
@@ -134,7 +138,7 @@ public class VaccinationFormController {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<String> idList = VaccineRepo.getIds();
+            List<String> idList = vaccineBO.getIds();
 
             for (String id : idList) {
                 obList.add(id);
@@ -142,7 +146,7 @@ public class VaccinationFormController {
             VaccineIdCMB.setItems(obList);
 
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e){
             throw new RuntimeException(e);
         }
     }
@@ -153,14 +157,14 @@ public class VaccinationFormController {
         String id = VaccineIdCMB.getValue();
         System.out.println("432");
         try {
-            Vaccine vaccine1 = VaccineRepo.searchById(id);
+            Vaccine vaccine1 = vaccineBO.searchVaccine(id);
             if (vaccine1 != null) {
                 System.out.println("ok "+id);
                 VaccineIdLBL.setText(vaccine1.getVaccine_id());
                 lblEmployeeId.setText(vaccine1.getEmployee_id());
                 vaccine=vaccine1;
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -171,7 +175,7 @@ public class VaccinationFormController {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<String> pIdList = PatientRepo.getPIds();
+            List<String> pIdList = patientBO.getPIds();
 
             for (String id : pIdList) {
                 obList.add(id);
@@ -179,7 +183,7 @@ public class VaccinationFormController {
             ParentNICCMB.setItems(obList);
 
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -188,12 +192,12 @@ public class VaccinationFormController {
     void ParentNICCMBOnAction(ActionEvent event) {
         String id = ParentNICCMB.getValue();
         try {
-            Patient patient = PatientRepo.searchById(id);
+            Patient patient = patientBO.searchPatient(id);
             if (patient != null) {
                 ParentNicLBL.setText(patient.getPatient_id());
 
             }
-        } catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -201,7 +205,7 @@ public class VaccinationFormController {
     private void loadAllVaccination() {
         ObservableList<VaccinationTm> tmList = FXCollections.observableArrayList();
 
-        for (Vaccination vaccination : vaccinationList) {
+        for (VaccinationDTO vaccination : vaccinationList) {
             VaccinationTm vaccinationTm = new VaccinationTm(
 
                     vaccination.getPatient_id(),
@@ -229,11 +233,11 @@ public class VaccinationFormController {
 
     }
 
-    private List<Vaccination> getAllVaccination() {
-        List<Vaccination> vaccinationList = null;
+    private List<VaccinationDTO> getAllVaccination() {
+        List<VaccinationDTO> vaccinationList = null;
         try {
-            vaccinationList = VaccinationRepo.getAll();
-        } catch (SQLException e) {
+            vaccinationList = vaccinationBO.getAllVaccination();
+        } catch (SQLException | ClassNotFoundException e){
             throw new RuntimeException(e);
         }
         return vaccinationList;
@@ -262,12 +266,12 @@ public class VaccinationFormController {
         String patient_id = ParentNICCMB.getValue();
 
         try {
-            boolean isDeleted = VaccinationRepo.delete(patient_id);
+            boolean isDeleted = vaccinationBO.deleteVaccination(patient_id);
             if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "deleted!").show();
                 loadAllVaccination();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -289,7 +293,7 @@ public class VaccinationFormController {
     }
 
     @FXML
-    void SaveButtonOnAction(ActionEvent event) throws SQLException {
+    void SaveButtonOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String patient_id = ParentNICCMB.getValue();
         String vaccine_id = VaccineIdCMB.getValue();
         String vaccine_name = vaccineNmaeCMB.getValue();
@@ -297,7 +301,7 @@ public class VaccinationFormController {
 
 
 
-        Vaccine vaccine1 = VaccineRepo.searchById(vaccine_id);
+        Vaccine vaccine1 = vaccineBO.searchVaccine(vaccine_id);
         Vaccination vaccination = new Vaccination(patient_id, vaccine_id,vaccine_name,date);
 
 
@@ -308,16 +312,12 @@ public class VaccinationFormController {
         }
 
         Vaccine vaccine = new Vaccine(vaccine_id,lblEmployeeId.getText(),vaccine1.getVaccine_name(),vaccine1.getVaccine_date(),vaccine1.getManufacture(),vaccine1.getQuantity());
-       PlaceVaccination pv = new  PlaceVaccination(vaccine,vaccination);
+       PlaceVaccinationDTO placeVaccinationDTO = new PlaceVaccinationDTO(new VaccineDTO(),new VaccinationDTO());
 
-        try {
-            boolean isSaved = PlaceVaccinationRepo.placeVaccination(pv);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "saved!").show();
-                loadAllVaccination();
-            }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        boolean isSaved = placeVaccinationBO.placeVaccination(placeVaccinationDTO);
+        if (isSaved) {
+            new Alert(Alert.AlertType.CONFIRMATION, "saved!").show();
+            loadAllVaccination();
         }
 
     }
@@ -332,12 +332,12 @@ public class VaccinationFormController {
         Vaccination vaccination = new Vaccination(patient_id, vaccine_id,vaccine_name,date);
 
         try {
-            boolean isUpdated = VaccinationRepo.update(vaccination);
+            boolean isUpdated = vaccinationBO.updateVaccination(new VaccinationDTO(patient_id, vaccine_id,vaccine_name,date));
             if (isUpdated) {
                 new Alert(Alert.AlertType.CONFIRMATION, "updated!").show();
                 loadAllVaccination();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -347,7 +347,7 @@ public class VaccinationFormController {
         String  patient_id = ParentNICCMB.getValue();
 
         try {
-            Vaccination vaccination = VaccinationRepo.searchById( patient_id);
+            Vaccination vaccination = vaccinationBO.searchVaccination( patient_id);
 
             if (vaccination != null) {
                 ParentNICCMB.setValue(vaccination.getPatient_id());
@@ -356,7 +356,7 @@ public class VaccinationFormController {
                 DateAdminLable.setText(vaccination.getDate());
 
             }
-        } catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
