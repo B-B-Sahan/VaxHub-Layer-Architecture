@@ -2,12 +2,14 @@ package lk.ijse.vaxhub.dao.custom.Impl;
 
 import lk.ijse.vaxhub.dao.SQLUtil;
 import lk.ijse.vaxhub.dao.custom.VaccineDAO;
+import lk.ijse.vaxhub.db.DbConnection;
 import lk.ijse.vaxhub.entity.EmployeeAttendance;
 import lk.ijse.vaxhub.entity.Vaccine;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -70,6 +72,21 @@ public class VaccineDAOImpl implements VaccineDAO {
         }
         return idList;
     }
-}
+
+    @Override
+    public boolean qtyupdate(Vaccine vaccine) throws SQLException{
+        System.out.println("pk "+vaccine.getQuantity());
+        String sql = "UPDATE vaccine SET quantity = quantity - ? WHERE vaccine_id = ?";
+        PreparedStatement pstm = DbConnection.getInstance().getConnection()
+                .prepareStatement(sql);
+
+
+        pstm.setString(1, "1");
+        pstm.setString(2, vaccine.getVaccine_id());
+
+        return pstm.executeUpdate() > 0;
+    }
+    }
+
 
 

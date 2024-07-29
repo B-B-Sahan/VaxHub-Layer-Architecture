@@ -7,12 +7,13 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Label;
 import lk.ijse.vaxhub.bo.BOFactory;
 import lk.ijse.vaxhub.bo.custom.AppoimentBO;
+import lk.ijse.vaxhub.bo.custom.DashBoardBO;
 
 import java.sql.SQLException;
 
 public class DashboardFormController {
- /*   @FXML
-   private BarChart<?, ?> paymentBarchart;
+    @FXML
+    private BarChart<?, ?> paymentBarchart;
 
     @FXML
     private Label appoimentcountLable;
@@ -32,48 +33,25 @@ public class DashboardFormController {
     @FXML
     private Label usernameLable;
 
-   AppoimentBO appoimentBO = (AppoimentBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.Appoiment);
-    public void initialize() throws SQLException {
+    DashBoardBO dashBoardBO = (DashBoardBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.DashBoard);
 
-        getEmpolyeeAttendance();
-        getAppoimentCount();
-       // setDataToBarChart();
-    }
+    public void initialize() {
 
-   private void setDataToBarChart() {
-        ObservableList<XYChart.Series<String, Integer>> barChartData = PaymentRepo.getDataToBarChart();
+        try {
+            int appoimentCount = dashBoardBO.getAppoimentCount();
+            setappoimentCount(appoimentCount);
 
-        paymentchart.setData(barChartData);
+            int employeeCount = dashBoardBO.getEmpolyeeAttendance();
+            setEmoployeeCount(employeeCount);
 
-    }
 
-   private void getAppoimentCount() {
+        } catch (SQLException e) {
 
-        AppoimentRepo appoimentRepo = new AppoimentRepo();
-
-        try{
-            int count = appoimentRepo.countAppoiment();
-            appoimentcountLable.setText(String.valueOf("0"+count));
-
-        } catch (SQLException throwables){
-            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-
     }
-    private void getEmpolyeeAttendance() {
+    private void setappoimentCount(int appoimentCount){appoimentcountLable.setText(String.valueOf(appoimentCount));}
 
-        EmployeeAttendanceRepo employeeAttendanceRepo = new EmployeeAttendanceRepo();
-
-        try{
-            int count = employeeAttendanceRepo.countEmpAttendance();
-            employeecountLable.setText(String.valueOf("0"+count));
-
-        } catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
-
-
-    }*/
-
-
+    private void setEmoployeeCount(int employeeCount) {employeecountLable.setText(String.valueOf(employeeCount));}
 }

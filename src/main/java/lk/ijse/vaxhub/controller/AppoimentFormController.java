@@ -228,7 +228,7 @@ public class AppoimentFormController {
         }
         AppoimentTable.setItems(tmList);
         AppoimentTm selectedItem = AppoimentTable.getSelectionModel().getSelectedItem();
-        System.out.println("selectedItem = " + selectedItem);
+
 
 
     }

@@ -138,7 +138,7 @@ public class PaymentFormController {
 
         PaymentTable.setItems(tmList);
         PaymentTm selectedItem = PaymentTable.getSelectionModel().getSelectedItem();
-        System.out.println("selectedItem = " + selectedItem);
+
 
     }
 

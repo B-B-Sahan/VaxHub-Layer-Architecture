@@ -14,7 +14,7 @@ public class BOFactory {
 
 
     public enum BOTypes{
-            Appoiment,Employee_Attendance,Employee,Patient,Payment,Place_Vaccination,Register,Vaccination,Vaccine,Login,SignUp
+            Appoiment,DashBoard,Employee_Attendance,Employee,Patient,Payment,Place_Vaccination,Register,Vaccination,Vaccine,Login,SignUp
         }
 
         //Object creation logic for BO objects
@@ -22,7 +22,9 @@ public class BOFactory {
             switch (types){
                 case Appoiment:
                     return new AppoimentBOImpl();
-                case Employee_Attendance:
+                case DashBoard:
+                    return new DashBoardBOImpl();
+                    case Employee_Attendance:
                     return new EmployeeAttendanceBOImpl();
                 case Employee:
                     return new EmployeeBOImpl();

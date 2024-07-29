@@ -18,4 +18,5 @@ public interface VaccineBO extends SuperBO {
     public boolean deleteVaccine(String id) throws SQLException, ClassNotFoundException;
     public Vaccine searchVaccine(String id) throws SQLException, ClassNotFoundException;
     List<String> getIds() throws SQLException, ClassNotFoundException;
+    public  boolean qtyupdate(Vaccine vaccine) throws SQLException,ClassNotFoundException;
 }

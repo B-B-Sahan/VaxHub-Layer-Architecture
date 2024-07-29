@@ -221,7 +221,7 @@ public class VaccinationFormController {
 
         VaccinationTable.setItems(tmList);
         VaccinationTm selectedItem = VaccinationTable.getSelectionModel().getSelectedItem();
-        System.out.println("selectedItem = " + selectedItem);
+
 
     }
 
@@ -312,12 +312,16 @@ public class VaccinationFormController {
         }
 
         Vaccine vaccine = new Vaccine(vaccine_id,lblEmployeeId.getText(),vaccine1.getVaccine_name(),vaccine1.getVaccine_date(),vaccine1.getManufacture(),vaccine1.getQuantity());
-       PlaceVaccinationDTO placeVaccinationDTO = new PlaceVaccinationDTO(new VaccineDTO(),new VaccinationDTO());
+        PlaceVaccination pv = new  PlaceVaccination(vaccine,vaccination);
 
-        boolean isSaved = placeVaccinationBO.placeVaccination(placeVaccinationDTO);
-        if (isSaved) {
-            new Alert(Alert.AlertType.CONFIRMATION, "saved!").show();
-            loadAllVaccination();
+        try {
+            boolean isSaved = placeVaccinationBO.placeVaccination(pv);
+            if (isSaved) {
+                new Alert(Alert.AlertType.CONFIRMATION, "saved!").show();
+                loadAllVaccination();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
     }

@@ -5,6 +5,7 @@ import lk.ijse.vaxhub.dao.DAOFactory;
 import lk.ijse.vaxhub.dao.custom.RegisterDAO;
 import lk.ijse.vaxhub.dao.custom.VaccinationDAO;
 import lk.ijse.vaxhub.dao.custom.VaccineDAO;
+import lk.ijse.vaxhub.db.DbConnection;
 import lk.ijse.vaxhub.dto.RegisterDTO;
 import lk.ijse.vaxhub.dto.VaccineDTO;
 import lk.ijse.vaxhub.entity.Register;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,20 @@ public class VaccineBOImpl implements VaccineBO {
     @Override
     public List<String> getIds() throws SQLException, ClassNotFoundException {
         return vaccineDAO.getIds();
+    }
+
+    @Override
+    public  boolean qtyupdate(Vaccine vaccine) throws SQLException {
+        System.out.println("pk "+vaccine.getQuantity());
+        String sql = "UPDATE vaccine SET quantity = quantity - ? WHERE vaccine_id = ?";
+        PreparedStatement pstm = DbConnection.getInstance().getConnection()
+                .prepareStatement(sql);
+
+
+        pstm.setString(1, "1");
+        pstm.setString(2, vaccine.getVaccine_id());
+
+        return pstm.executeUpdate() > 0;
     }
 
 }

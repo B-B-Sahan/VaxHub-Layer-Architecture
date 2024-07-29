@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface VaccineDAO extends CrudDAO<Vaccine> {
     List<String> getIds() throws SQLException, ClassNotFoundException;
+    public  boolean qtyupdate(Vaccine vaccine) throws SQLException ;
 }

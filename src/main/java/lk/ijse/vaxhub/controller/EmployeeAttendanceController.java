@@ -187,7 +187,7 @@ public class EmployeeAttendanceController {
 
         EmployeeAttendanceTable.setItems(tmList);
         EmployeeAttendanceTm selectedItem = EmployeeAttendanceTable.getSelectionModel().getSelectedItem();
-        System.out.println("selectedItem = " + selectedItem);
+
     }
 
 

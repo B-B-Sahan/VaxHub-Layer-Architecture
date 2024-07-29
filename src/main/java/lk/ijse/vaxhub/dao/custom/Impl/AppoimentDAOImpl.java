@@ -71,7 +71,7 @@ public class AppoimentDAOImpl implements AppoimentDAO {
 
     @Override
     public List<String> getAIds() throws SQLException, ClassNotFoundException {
-        ResultSet rst = SQLUtil.execute( "SELECT appoiment_id FROM appoiment");
+        ResultSet rst = SQLUtil.execute( "SELECT appoiment_id  FROM appoiment");
         List<String> idList = new ArrayList<>();
         while (rst.next()) {
             idList.add(rst.getString("appoiment_id"));

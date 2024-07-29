@@ -60,4 +60,13 @@ public class EmployeeAttendanceDAOImpl implements EmployeeAttendanceDAO {
           return new EmployeeAttendance(employee_id + "", rst.getString("attendance_id"), rst.getString("date"),rst.getString("in_time"),rst.getString("out_time"),rst.getString("attendance"));
 }
 
+    @Override
+    public int getEmpolyeeAttendance() throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.execute("SELECT COUNT(employee_id) FROM attendance");
+        int employeeCount = 0;
+        if (rst.next()) {
+            employeeCount = rst.getInt("employee_id");
+        }
+        return employeeCount;
+    }
 }

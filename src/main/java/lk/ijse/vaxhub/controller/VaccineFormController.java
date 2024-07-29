@@ -178,7 +178,7 @@ public class VaccineFormController {
 
         VaccinationTable.setItems(tmList);
         VaccineTm selectedItem = VaccinationTable.getSelectionModel().getSelectedItem();
-        System.out.println("selectedItem = " + selectedItem);
+
 
 
     }
